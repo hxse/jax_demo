@@ -12,11 +12,11 @@ def run_strategy(config: dict, settings: object) -> dict:
         _c = config[data_mode]
         indicators_result = calculate_indicators(_c, settings)
         signal_result = generate_signal(_c, indicators_result, settings)
-        processed_signal_result = process_trade_signals(
-            _c, signal_result, settings)
+        # processed_signal_result = process_trade_signals(
+        #     _c, signal_result, settings)
 
         final_output[data_mode]["indicators"] = indicators_result
         final_output[data_mode]["signal"] = signal_result
-        final_output[data_mode]["processed_signal"] = processed_signal_result
+        # final_output[data_mode]["processed_signal"] = processed_signal_result
 
     return final_output
