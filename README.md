@@ -1,6 +1,5 @@
 # use wsl
-  * 不建议在wsl内启动vscode,因为mcp工具不能正常使用
-  * 不建议在windows路径上运行项目,因为性能差,建议移动到wsl的 ~/ 路径
-  * 访问`\\wsl.localhost\Ubuntu\home\hxse\jax_demo`,鼠标右键通过code打开
-  * 在powershell运行命令,roocode可正常识别
-    * `wsl -d Ubuntu bash -i -c 'cd /home/hxse/jax_demo && uv run python main.py'`
+  * 直接把项目`git clone`到wsl内部, 然后`code .`打开项目
+# todo
+  * 目前,技术指标计算,指标探索模块,和指标信号生成都弄好了
+  * `src/process_signal`指标信号进一步处理, 添加atr_sl tp tsl还没写完, 先不写了, 去试试手动交易, 以后有空再写吧
