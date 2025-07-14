@@ -59,17 +59,17 @@ def _calculate_full_state_step(state, inputs):
         exit_long_raw, exit_short_raw, sl_triggered, tp_triggered,
         tsl_triggered)
 
-    # 处理平仓
-    new_position, new_entry_price, new_exit_price, new_highest_price, new_lowest_price, new_tsl_price = _handle_exit(
-        is_long, is_short, should_exit_long, should_exit_short, trade_price,
-        new_position, new_entry_price, new_exit_price, new_highest_price,
-        new_lowest_price, new_tsl_price)
-
     # 处理普通开仓
     new_position, new_entry_price, new_exit_price, new_highest_price, new_lowest_price, new_tsl_price = _handle_entry(
         enter_long_raw, enter_short_raw, new_position, trade_price,
         new_entry_price, new_exit_price, new_highest_price, new_lowest_price,
         new_tsl_price)
+
+    # 处理平仓
+    new_position, new_entry_price, new_exit_price, new_highest_price, new_lowest_price, new_tsl_price = _handle_exit(
+        is_long, is_short, should_exit_long, should_exit_short, trade_price,
+        new_position, new_entry_price, new_exit_price, new_highest_price,
+        new_lowest_price, new_tsl_price)
 
     # 处理反手
     new_position, new_entry_price, new_exit_price, new_highest_price, new_lowest_price, new_tsl_price = _handle_reverse(

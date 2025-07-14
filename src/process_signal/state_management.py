@@ -131,12 +131,12 @@ def _update_tracked_prices(position_prev, is_long, is_short, trade_price,
     new_highest = jnp.where(
         jnp.logical_or(position_prev == 1, position_prev == 3), trade_price,
         jnp.where(is_long, jnp.maximum(highest_prev, current_close),
-                  highest_prev))
+                  highest_prev))  # 这里is_long可以替换成position_prev == 2
     # 新开空仓时，最低价为交易价格；持空时，取历史最低与收盘价的较小值
     new_lowest = jnp.where(
         jnp.logical_or(position_prev == -1, position_prev == -3), trade_price,
         jnp.where(is_short, jnp.minimum(lowest_prev, current_close),
-                  lowest_prev))
+                  lowest_prev))  # is_short可以替换成position_prev == -2
     # 无仓位时，重置最高价为负无穷，最低价为正无穷
     new_highest = jnp.where(position_prev == 0, -jnp.inf, new_highest)
     new_lowest = jnp.where(position_prev == 0, jnp.inf, new_lowest)
