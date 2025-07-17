@@ -10,6 +10,10 @@ root_path = next((p for p in Path(__file__).resolve().parents
 if root_path:
     sys.path.insert(0, str(root_path))
 
+# import os
+
+# os.environ['JAX_TRACEBACK_FILTERING'] = 'off'
+
 import jax
 
 jax.config.update("jax_enable_x64", True)
