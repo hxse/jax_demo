@@ -43,5 +43,4 @@ def no_atr_jax(high: jnp.ndarray, low: jnp.ndarray, close: jnp.ndarray,
         jnp.ndarray: 一个与 close 形状相同且填充了 NaN 的数组。
     """
     output_shape = close.shape
-    output_dtype = close.dtype
-    return jnp.full(output_shape, jnp.nan, dtype=output_dtype)
+    return jnp.full(output_shape, jnp.nan)

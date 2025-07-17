@@ -26,8 +26,8 @@ def rma_jax(series: jnp.ndarray, period: jnp.ndarray,
     # RMA 的初始 carry 状态: (上一个 RMA 值, 初始 SMA 的和, 初始 SMA 的计数)
     initial_rma_carry = (
         jnp.nan,  # prev_rma_value
-        jnp.array(0.0, dtype=jnp.float64),  # sum for initial SMA
-        jnp.array(0, dtype=jnp.int32)  # count for initial SMA
+        jnp.array(0.0),  # sum for initial SMA
+        jnp.array(0)  # count for initial SMA
     )
 
     def rma_scan_body(carry, current_val_and_idx):
@@ -87,7 +87,7 @@ def rma_jax(series: jnp.ndarray, period: jnp.ndarray,
 
     # 准备 scan 的输入数据：包括索引，用于处理回溯期 NaN
     # 这里的 `len(series)` 替换了原来的 `n`
-    series_indexed_data = (series, jnp.arange(len(series), dtype=jnp.int32))
+    series_indexed_data = (series, jnp.arange(len(series)))
 
     # 执行 scan
     _, rma_results_scan = lax.scan(rma_scan_body,
@@ -113,9 +113,5 @@ def no_rma_jax(values: jnp.ndarray, period: int, unroll: int) -> jnp.ndarray:
     返回:
         jnp.ndarray: 一个与 values 形状相同且填充了 NaN 的数组。
     """
-    # 获取 values 数组的形状和数据类型
     output_shape = values.shape
-    output_dtype = values.dtype
-
-    # 创建一个全 NaN 的数组，与 RMA 的预期输出形状和 Dtype 匹配
-    return jnp.full(output_shape, jnp.nan, dtype=output_dtype)
+    return jnp.full(output_shape, jnp.nan)

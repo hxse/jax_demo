@@ -22,7 +22,7 @@ def psar_jax(
     n = len(close)
 
     if n < 2:
-        nan_array = jnp.full(close.shape, jnp.nan, dtype=close.dtype)
+        nan_array = jnp.full(close.shape, jnp.nan)
         return nan_array, nan_array, nan_array, nan_array
 
     # 初始趋势判断
@@ -138,5 +138,5 @@ def no_psar_jax(
 ) -> tuple[jnp.ndarray, jnp.ndarray, jnp.ndarray, jnp.ndarray]:
     """PSAR 占位函数，返回全 NaN 数组。"""
     output_shape = close.shape
-    nan_array = jnp.full(output_shape, jnp.nan, dtype=close.dtype)
+    nan_array = jnp.full(output_shape, jnp.nan)
     return nan_array, nan_array, nan_array, nan_array

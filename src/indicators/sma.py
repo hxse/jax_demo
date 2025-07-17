@@ -68,7 +68,4 @@ def no_sma_jax(close: jnp.ndarray, period: jnp.ndarray) -> jnp.ndarray:
     """
     # 获取 close 数组的形状和数据类型
     output_shape = close.shape
-    output_dtype = close.dtype
-
-    # 创建一个全 NaN 的数组，与 SMA 的预期输出形状和 Dtype 匹配
-    return jnp.full(output_shape, jnp.nan, dtype=output_dtype)
+    return jnp.full(output_shape, jnp.nan)

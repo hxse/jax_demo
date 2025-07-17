@@ -36,8 +36,7 @@ def rsi_jax(close: jnp.ndarray, period: jnp.ndarray,
         利用 `rma_jax` 函数进行移动平均计算。
         """
         # 计算价格差异，为与 TA-Lib 行为一致，第一个差异设为 NaN
-        diff = jnp.diff(close_arr,
-                        prepend=jnp.array([jnp.nan], dtype=close_arr.dtype))
+        diff = jnp.diff(close_arr, prepend=jnp.array([jnp.nan]))
 
         # 分离正向和负向差异
         positive_diff = jnp.maximum(0.0, diff)
@@ -86,7 +85,7 @@ def rsi_jax(close: jnp.ndarray, period: jnp.ndarray,
     # 使用 lax.cond 进行条件逻辑，处理 period=1 和 period > 1 的情况
     return lax.cond(
         period == 1, lambda close_arr_val, period_val_dummy: jnp.full_like(
-            close_arr_val, jnp.nan, dtype=jnp.float64),
+            close_arr_val, jnp.nan),
         _calculate_rsi_for_period_greater_than_one, close, period)
 
 
@@ -105,9 +104,5 @@ def no_rsi_jax(close: jnp.ndarray, period: int, unroll: int) -> jnp.ndarray:
     返回:
         jnp.ndarray: 一个与 close 形状相同且填充了 NaN 的数组。
     """
-    # 获取 close 数组的形状和数据类型
     output_shape = close.shape
-    output_dtype = close.dtype
-
-    # 创建一个全 NaN 的数组，与 RSI 的预期输出形状和 Dtype 匹配
-    return jnp.full(output_shape, jnp.nan, dtype=output_dtype)
+    return jnp.full(output_shape, jnp.nan)
