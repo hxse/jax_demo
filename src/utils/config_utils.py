@@ -3,13 +3,17 @@ import jax.numpy as jnp
 from dataclasses import dataclass, field
 from jax.tree_util import register_dataclass
 from src.utils.jax_utils import reset_to_template, strip_key_prefix
+from src.utils.jax_utils import create_arange, create_linspace
+from decimal import Decimal
+
+num = 100
 
 
-def indicator_params_template(period=[14, 15, 1],
-                              diff=[50],
-                              af0=[0.02, 0.03, 0.01],
-                              af_step=[0.02, 0.03, 0.01],
-                              max_af=[0.2, 0.3, 0.1],
+def indicator_params_template(period=[14, 1, num],
+                              diff=[100],
+                              af0=[0.02, 0.01, num],
+                              af_step=[0.02, 0.01, num],
+                              max_af=[0.2, 0.1, num],
                               enable_list=["sma"],
                               enable_enter_prev=["sma"],
                               enable_exit_prev=["sma"],
@@ -23,7 +27,7 @@ def indicator_params_template(period=[14, 15, 1],
 
     indicator_params = {
         "sma": {
-            "period": jnp.arange(period[0], period[1], period[2]),
+            "period": create_arange(period[0], period[1], period[2]),
             "_template_idx": jnp.array(0),
             "_enable": jnp.array(False),
             "_enable_enter_prev": jnp.array(False),
@@ -31,14 +35,11 @@ def indicator_params_template(period=[14, 15, 1],
             "_enable_reverse": jnp.array(False)
         },
         "sma2": {
-            "period":
-            jnp.arange(period[0] + diff[0], period[1] + diff[0],
-                       period[2] + diff[0]),
-            "_enable":
-            jnp.array(False),
+            "period": create_arange(period[0] + diff[0], period[1], period[2]),
+            "_enable": jnp.array(False),
         },
         "rsi": {
-            "period": jnp.arange(period[0], period[1], period[2]),
+            "period": create_arange(period[0], period[1], period[2]),
             "_threshold": jnp.array(30),
             "_template_idx": jnp.array(0),
             "_enable": jnp.array(False),
@@ -47,7 +48,7 @@ def indicator_params_template(period=[14, 15, 1],
             "_enable_reverse": jnp.array(False),
         },
         "atr": {
-            "period": jnp.arange(period[0], period[1], period[2]),
+            "period": create_arange(period[0], period[1], period[2]),
             "_template_idx": jnp.array(0),
             "_enable": jnp.array(False),
             "_enable_enter_prev": jnp.array(False),
@@ -55,9 +56,9 @@ def indicator_params_template(period=[14, 15, 1],
             "_enable_reverse": jnp.array(False),
         },
         "psar": {
-            "af0": jnp.arange(af0[0], af0[1], af0[2]),
-            "af_step": jnp.arange(af_step[0], af_step[1], af_step[2]),
-            "max_af": jnp.arange(max_af[0], max_af[1], max_af[2]),
+            "af0": create_linspace(af0[0], af0[1], af0[2]),
+            "af_step": create_linspace(af_step[0], af_step[1], af_step[2]),
+            "max_af": create_linspace(max_af[0], max_af[1], max_af[2]),
             "_template_idx": jnp.array(0),
             "_enable": jnp.array(False),
             "_enable_enter_prev": jnp.array(False),

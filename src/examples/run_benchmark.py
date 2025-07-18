@@ -10,7 +10,9 @@ root_path = next((p for p in Path(__file__).resolve().parents
 if root_path:
     sys.path.insert(0, str(root_path))
 
-# import os
+import os
+
+os.environ['TF_GPU_ALLOCATOR'] = 'cuda_malloc_async'
 
 # os.environ['JAX_TRACEBACK_FILTERING'] = 'off'
 

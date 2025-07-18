@@ -245,3 +245,43 @@ if __name__ == "__main__":
     )
     print(test_params)
     print("-" * 30)
+
+
+def create_arange(start, step, num):
+    """
+    根据起始值、步长和元素数量，直接创建并返回一个 JAX 数组 (jnp.ndarray)。
+    此函数用于生成类似 jnp.arange 的整数或浮点数序列。
+
+    Args:
+        start (float/int): 序列的起始值。
+        step (float/int): 序列的步长。
+        num (int): 期望生成的元素数量。
+
+    Returns:
+        jax.numpy.ndarray: 生成的 JAX 数组。
+    """
+    # jnp.arange(start, stop, step) 的 stop 是不包含的。
+    # 为了生成 num 个元素，stop 应该是 start + num * step
+    stop = start + num * step
+
+    # 直接使用 arange 创建并返回 JAX 数组
+    return jnp.arange(start, stop, step)
+
+
+def create_linspace(start, step, num):
+    """
+    根据起始值、步长和元素数量，直接创建并返回一个 JAX 数组 (jnp.ndarray)。
+
+    Args:
+        start (float/int): 序列的起始值。
+        step (float/int): 序列的步长。
+        num (int): 期望生成的元素数量。
+
+    Returns:
+        jax.numpy.ndarray: 生成的 JAX 数组。
+    """
+    # linspace 的结束点是包含在内的，计算方式为：start + (num - 1) * step
+    end = start + (num - 1) * step
+
+    # 直接使用 linspace 创建并返回 JAX 数组
+    return jnp.linspace(start, end, num)

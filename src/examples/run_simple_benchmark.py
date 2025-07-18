@@ -22,7 +22,7 @@ if __name__ == "__main__":
                            gpu_unroll=8,
                            enable_cpu=True,
                            enable_gpu=True,
-                           enable_run_second=False)
+                           enable_run_second=True)
     print([k for k, v in result.items() if v != None])
     import pdb
     pdb.set_trace()
