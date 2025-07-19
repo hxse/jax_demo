@@ -16,6 +16,10 @@ os.environ['TF_GPU_ALLOCATOR'] = 'cuda_malloc_async'
 
 # os.environ['JAX_TRACEBACK_FILTERING'] = 'off'
 
+from src.utils.logging_utils import configure_cuda_error_logging
+
+configure_cuda_error_logging()
+
 import jax
 
 jax.config.update("jax_enable_x64", True)
@@ -24,7 +28,6 @@ from jax import vmap
 
 from src.utils.config_utils import get_config_vmap, settings
 from src.utils.profiling_utils import print_jax_device_info
-
 from src.jax_core.computation_utils import run_computation
 from src.jax_core.strategy_function import run_strategy
 import numpy as np

@@ -15,18 +15,17 @@ enable_gpu = True
 enable_run_second = False
 
 
-def main(
-    micro_path: str = micro_path,
-    macro_path: str = macro_path,
-    data_size: int = data_size,
-    cpu_unroll: int = cpu_unroll,
-    gpu_unroll: int = gpu_unroll,
-    enable_cpu: bool = enable_cpu,
-    enable_gpu: bool = enable_gpu,
-    enable_run_second: bool = enable_run_second,
-    num: int = num,
-):
-    configure_jax_cache(True)
+def main(micro_path: str = micro_path,
+         macro_path: str = macro_path,
+         data_size: int = data_size,
+         cpu_unroll: int = cpu_unroll,
+         gpu_unroll: int = gpu_unroll,
+         enable_cpu: bool = enable_cpu,
+         enable_gpu: bool = enable_gpu,
+         enable_run_second: bool = enable_run_second,
+         num: int = num,
+         cache=True):
+    configure_jax_cache(cache)
 
     df_data = load_tohlcv_from_csv(micro_path, data_size=data_size)
     np_data = convert_tohlcv_numpy(df_data)
