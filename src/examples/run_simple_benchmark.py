@@ -2,15 +2,20 @@ from run_benchmark import run_benchmark
 from src.utils.profiling_utils import print_jax_device_info
 from src.utils.jax_cache_config import configure_jax_cache
 from src.data_handler.data_loading import load_tohlcv_from_csv, convert_tohlcv_numpy
+import typer
 
-if __name__ == "__main__":
+micro_path = "database/live/BTC_USDT/15m/BTC_USDT_15m_20230228 160000.csv"
+macro_path = "database/live/BTC_USDT/4h/BTC_USDT_4h_20230228 160000.csv"
+num = 2
+data_size = 40 * 1000
+
+
+def main(micro_path: str = micro_path,
+         macro_path: str = macro_path,
+         num: int = num,
+         data_size: int = data_size):
     configure_jax_cache(True)
     cpu_devices, gpu_devices = print_jax_device_info()
-
-    micro_path = "database/live/BTC_USDT/15m/BTC_USDT_15m_20230228 160000.csv"
-    macro_path = "database/live/BTC_USDT/4h/BTC_USDT_4h_20230228 160000.csv"
-
-    data_size = 35040
 
     df_data = load_tohlcv_from_csv(micro_path, data_size=data_size)
     np_data = convert_tohlcv_numpy(df_data)
@@ -22,9 +27,18 @@ if __name__ == "__main__":
                            np_data2=np_data2,
                            cpu_unroll=5,
                            gpu_unroll=9,
-                           enable_cpu=False,
+                           enable_cpu=True,
                            enable_gpu=True,
-                           enable_run_second=True)
+                           enable_run_second=True,
+                           num=num)
     print([k for k, v in result.items() if v != None])
-    import pdb
-    pdb.set_trace()
+    print(
+        "sma_result length",
+        len(result["cpu_result"]["micro"]["indicators"]["sma"]["sma_result"]))
+
+
+if __name__ == "__main__":
+    app = typer.Typer(pretty_exceptions_show_locals=False)
+    app.command(help="also ma")(main)
+    app.command("ma", hidden=True)(main)
+    app()

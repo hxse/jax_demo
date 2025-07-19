@@ -38,7 +38,8 @@ def run_benchmark(np_data,
                   gpu_unroll=8,
                   enable_cpu=True,
                   enable_gpu=False,
-                  enable_run_second=False):
+                  enable_run_second=False,
+                  num=1):
 
     # Initialize all result and time variables to None
     run_cpu_time = None
@@ -56,14 +57,21 @@ def run_benchmark(np_data,
     if np_data2 is None:
         np_data2 = np.full_like(np_data[:10], np.nan)
 
+    print("conf num", num)
     print("data length", len(np_data), "data2 length", len(np_data2))
     print("cpu_unroll", cpu_unroll, "gpu_unroll", gpu_unroll)
 
-    _ = get_config_vmap(np_data.copy(), np_data2.copy(), indicator_params,
-                        indicator_in_axes)
+    _ = get_config_vmap(np_data.copy(),
+                        np_data2.copy(),
+                        indicator_params,
+                        indicator_in_axes,
+                        num=num)
     data_vmap_cpu, data_in_axes_cpu = _
-    _ = get_config_vmap(np_data.copy(), np_data2.copy(), indicator_params,
-                        indicator_in_axes)
+    _ = get_config_vmap(np_data.copy(),
+                        np_data2.copy(),
+                        indicator_params,
+                        indicator_in_axes,
+                        num=num)
     data_vmap_gpu, data_in_axes_gpu = _
 
     vmap_function_cpu = vmap(

@@ -28,7 +28,7 @@ def load_tohlcv_from_csv(file_path: str, data_size: int = None) -> np.ndarray:
     df["date"] = pd.to_datetime(df["time"], unit="ms")
 
     if data_size and len(df) > data_size:
-        df = df.iloc[:data_size]
+        df = df.iloc[-data_size:]
 
     return df
 

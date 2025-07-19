@@ -6,18 +6,17 @@ from src.utils.jax_utils import reset_to_template, strip_key_prefix
 from src.utils.jax_utils import create_arange, create_linspace
 from decimal import Decimal
 
-num = 100
 
-
-def indicator_params_template(period=[14, 1, num],
+def indicator_params_template(period=[14, 1],
                               diff=[100],
-                              af0=[0.02, 0.01, num],
-                              af_step=[0.02, 0.01, num],
-                              max_af=[0.2, 0.1, num],
+                              af0=[0.02, 0.01],
+                              af_step=[0.02, 0.01],
+                              max_af=[0.2, 0.1],
                               enable_list=["sma"],
                               enable_enter_prev=["sma"],
                               enable_exit_prev=["sma"],
-                              enable_reverse=[]):
+                              enable_reverse=[],
+                              num=1):
     '''
     不需要vmap矢量化分配的参数, 用下划线_开头
     下划线会在后续外部自动移除, 所以调用的时候不要带下划线
@@ -27,7 +26,7 @@ def indicator_params_template(period=[14, 1, num],
 
     indicator_params = {
         "sma": {
-            "period": create_arange(period[0], period[1], period[2]),
+            "period": create_arange(period[0], period[1], num),
             "_template_idx": jnp.array(0),
             "_enable": jnp.array(False),
             "_enable_enter_prev": jnp.array(False),
@@ -35,11 +34,11 @@ def indicator_params_template(period=[14, 1, num],
             "_enable_reverse": jnp.array(False)
         },
         "sma2": {
-            "period": create_arange(period[0] + diff[0], period[1], period[2]),
+            "period": create_arange(period[0] + diff[0], period[1], num),
             "_enable": jnp.array(False),
         },
         "rsi": {
-            "period": create_arange(period[0], period[1], period[2]),
+            "period": create_arange(period[0], period[1], num),
             "_threshold": jnp.array(30),
             "_template_idx": jnp.array(0),
             "_enable": jnp.array(False),
@@ -48,7 +47,7 @@ def indicator_params_template(period=[14, 1, num],
             "_enable_reverse": jnp.array(False),
         },
         "atr": {
-            "period": create_arange(period[0], period[1], period[2]),
+            "period": create_arange(period[0], period[1], num),
             "_template_idx": jnp.array(0),
             "_enable": jnp.array(False),
             "_enable_enter_prev": jnp.array(False),
@@ -56,9 +55,9 @@ def indicator_params_template(period=[14, 1, num],
             "_enable_reverse": jnp.array(False),
         },
         "psar": {
-            "af0": create_linspace(af0[0], af0[1], af0[2]),
-            "af_step": create_linspace(af_step[0], af_step[1], af_step[2]),
-            "max_af": create_linspace(max_af[0], max_af[1], max_af[2]),
+            "af0": create_linspace(af0[0], af0[1], num),
+            "af_step": create_linspace(af_step[0], af_step[1], num),
+            "max_af": create_linspace(max_af[0], max_af[1], num),
             "_template_idx": jnp.array(0),
             "_enable": jnp.array(False),
             "_enable_enter_prev": jnp.array(False),
@@ -92,7 +91,8 @@ def get_config_vmap(np_data,
                     indicator_params=None,
                     indicator_in_axes=None,
                     indicator_params2=None,
-                    indicator_in_axes2=None):
+                    indicator_in_axes2=None,
+                    num=1):
     """
     将中间配置列表转换为适用于 JAX vmap 的数据字典。
 
@@ -111,9 +111,9 @@ def get_config_vmap(np_data,
     """
 
     if indicator_params == None:
-        indicator_params = indicator_params_template()
+        indicator_params = indicator_params_template(num=num)
     if indicator_params2 == None:
-        indicator_params2 = indicator_params_template()
+        indicator_params2 = indicator_params_template(num=num)
 
     if indicator_in_axes == None:
         indicator_in_axes = reset_to_template(indicator_params)
