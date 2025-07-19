@@ -10,17 +10,19 @@ if __name__ == "__main__":
     micro_path = "database/live/BTC_USDT/15m/BTC_USDT_15m_20230228 160000.csv"
     macro_path = "database/live/BTC_USDT/4h/BTC_USDT_4h_20230228 160000.csv"
 
-    df_data = load_tohlcv_from_csv(micro_path, data_size=None)
+    data_size = 35040
+
+    df_data = load_tohlcv_from_csv(micro_path, data_size=data_size)
     np_data = convert_tohlcv_numpy(df_data)
 
-    df_data2 = load_tohlcv_from_csv(macro_path, data_size=None)
+    df_data2 = load_tohlcv_from_csv(macro_path, data_size=data_size)
     np_data2 = convert_tohlcv_numpy(df_data2)
 
     result = run_benchmark(np_data,
                            np_data2=np_data2,
-                           cpu_unroll=2,
-                           gpu_unroll=8,
-                           enable_cpu=True,
+                           cpu_unroll=5,
+                           gpu_unroll=9,
+                           enable_cpu=False,
                            enable_gpu=True,
                            enable_run_second=True)
     print([k for k, v in result.items() if v != None])

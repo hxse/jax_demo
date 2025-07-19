@@ -1,7 +1,7 @@
 from run_benchmark import run_benchmark
-from utils.profiling_utils import print_jax_device_info
-from utils.jax_cache_config import configure_jax_cache
-from data.data_loading import load_tohlcv_from_csv, convert_tohlcv_numpy
+from src.utils.profiling_utils import print_jax_device_info
+from src.utils.jax_cache_config import configure_jax_cache
+from src.data_handler.data_loading import load_tohlcv_from_csv, convert_tohlcv_numpy
 
 if __name__ == "__main__":
     configure_jax_cache(True)
@@ -9,7 +9,9 @@ if __name__ == "__main__":
 
     micro_path = "database/live/BTC_USDT/15m/BTC_USDT_15m_20230228 160000.csv"
 
-    df_data = load_tohlcv_from_csv(micro_path, data_size=None)
+    data_size = 35040
+
+    df_data = load_tohlcv_from_csv(micro_path, data_size=data_size)
     np_data = convert_tohlcv_numpy(df_data)
 
     cpu_second_run_times = []
@@ -18,7 +20,7 @@ if __name__ == "__main__":
     gpu_unroll_params = []
 
     # find_unroll = True
-    for i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]:
+    for i in range(1, 11):
         benchmark_results = run_benchmark(np_data,
                                           cpu_unroll=i,
                                           gpu_unroll=i,
@@ -33,6 +35,7 @@ if __name__ == "__main__":
         if gpu_time is not None:
             gpu_second_run_times.append(gpu_time)
             gpu_unroll_params.append(i)
+        benchmark_results = None
 
     if cpu_second_run_times:
         best_cpu_unroll, min_cpu_time = min(zip(cpu_unroll_params,

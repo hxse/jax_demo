@@ -50,13 +50,14 @@ def run_benchmark(np_data,
     second_cpu_result = None
     second_gpu_result = None
 
-    print("cpu_unroll", cpu_unroll, "gpu_unroll", gpu_unroll)
-
     cpu_settings = settings(unroll=cpu_unroll)
     gpu_settings = settings(unroll=gpu_unroll)
 
     if np_data2 is None:
         np_data2 = np.full_like(np_data[:10], np.nan)
+
+    print("data length", len(np_data), "data2 length", len(np_data2))
+    print("cpu_unroll", cpu_unroll, "gpu_unroll", gpu_unroll)
 
     _ = get_config_vmap(np_data.copy(), np_data2.copy(), indicator_params,
                         indicator_in_axes)
@@ -84,7 +85,7 @@ def run_benchmark(np_data,
             if run_idx == 0:
                 cpu_result, run_cpu_time = run_computation(
                     vmap_function_cpu, data_on_cpu_device, cpu_settings)
-            elif run_idx == 1:
+            elif run_idx >= 1:
                 second_cpu_result, second_run_cpu_time = run_computation(
                     vmap_function_cpu, data_on_cpu_device, cpu_settings)
 
@@ -97,7 +98,7 @@ def run_benchmark(np_data,
             if run_idx == 0:
                 gpu_result, run_gpu_time = run_computation(
                     vmap_function_gpu, data_on_gpu_device, gpu_settings)
-            elif run_idx == 1:
+            elif run_idx >= 1:
                 second_gpu_result, second_run_gpu_time = run_computation(
                     vmap_function_gpu, data_on_gpu_device, gpu_settings)
 
