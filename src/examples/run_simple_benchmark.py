@@ -6,7 +6,7 @@ import typer
 
 micro_path = "database/live/BTC_USDT/15m/BTC_USDT_15m_20230228 160000.csv"
 macro_path = "database/live/BTC_USDT/4h/BTC_USDT_4h_20230228 160000.csv"
-num = 2
+num = 1
 data_size = 40 * 1000
 cpu_unroll = 5
 gpu_unroll = 9

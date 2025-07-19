@@ -74,13 +74,13 @@ def print_jax_device_info():
         cpu_devices = jax.devices("cpu")
         print(f"CPU 设备: {cpu_devices}")
     except RuntimeError as e:
-        print(f"CPU 设备: 未检测到CPU设备或初始化失败。错误: {e}")
+        print(f"CPU 设备: 未检测到CPU设备或初始化失败。")
     gpu_devices = None
     try:
         gpu_devices = jax.devices("gpu")
         print(f"GPU 设备: {gpu_devices}")
     except RuntimeError as e:
-        print(f"GPU 设备: 未检测到GPU设备或初始化失败。错误: {e}")
+        print(f"GPU 设备: 未检测到GPU设备或初始化失败。")
 
     print(f"\nJAX 默认设备: {jax.default_backend()}")
     print("--------------------")
