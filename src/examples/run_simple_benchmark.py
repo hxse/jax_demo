@@ -12,7 +12,7 @@ cpu_unroll = 5
 gpu_unroll = 9
 enable_cpu = True
 enable_gpu = True
-enable_run_second = True
+enable_run_second = False
 
 
 def main(
