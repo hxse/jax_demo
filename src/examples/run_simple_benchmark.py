@@ -27,7 +27,6 @@ def main(
     num: int = num,
 ):
     configure_jax_cache(True)
-    cpu_devices, gpu_devices = print_jax_device_info()
 
     df_data = load_tohlcv_from_csv(micro_path, data_size=data_size)
     np_data = convert_tohlcv_numpy(df_data)

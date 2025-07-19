@@ -5,7 +5,6 @@ from src.data_handler.data_loading import load_tohlcv_from_csv, convert_tohlcv_n
 
 if __name__ == "__main__":
     configure_jax_cache(True)
-    cpu_devices, gpu_devices = print_jax_device_info()
 
     micro_path = "database/live/BTC_USDT/15m/BTC_USDT_15m_20230228 160000.csv"
 
