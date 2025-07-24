@@ -12,9 +12,13 @@ if root_path:
 
 import os
 
+# os.environ['JAX_TRACEBACK_FILTERING'] = 'off'
+
 os.environ['TF_GPU_ALLOCATOR'] = 'cuda_malloc_async'
 
-# os.environ['JAX_TRACEBACK_FILTERING'] = 'off'
+# os.environ['JAX_ENABLE_PGLE'] = 'true'
+
+os.environ['XLA_FLAGS'] = ('--xla_gpu_enable_latency_hiding_scheduler=true ')
 
 from src.utils.logging_utils import configure_cuda_error_logging
 
